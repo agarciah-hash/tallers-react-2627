@@ -7,7 +7,7 @@
 - **Versions utilitzades:** React 19.3.1, Vite 8.3.4 i Tailwind CSS 4.3.3.
 
 > **Projecte acumulatiu:** aquesta fitxa crea el projecte `hola-mon`, que reutilitzarem a les fitxes següents. No l'esborris en acabar.
-
+prova
 ## Continguts
 
 1. Teoria
