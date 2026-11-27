@@ -1,6 +1,9 @@
+import { useContext } from 'react'
 import Boto from './Boto.jsx'
+import { TasquesContext } from '../context/TasquesContext.js'
 
-function Tasca({ tasca, onToggle, onElimina }) {
+function Tasca({ tasca }) {
+  const { toggleTasca, eliminaTasca } = useContext(TasquesContext)
   const idCheckbox = `tasca-${tasca.id}`
 
   return (
@@ -9,7 +12,7 @@ function Tasca({ tasca, onToggle, onElimina }) {
         id={idCheckbox}
         type="checkbox"
         checked={tasca.feta}
-        onChange={() => onToggle(tasca.id)}
+        onChange={() => toggleTasca(tasca.id)}
         className="h-4 w-4 accent-indigo-600 cursor-pointer"
       />
       <label
@@ -22,7 +25,7 @@ function Tasca({ tasca, onToggle, onElimina }) {
       </label>
       <Boto
         variant="perill"
-        onClick={() => onElimina(tasca.id)}
+        onClick={() => eliminaTasca(tasca.id)}
         aria-label={`Elimina la tasca: ${tasca.text}`}
         className="text-sm py-1 px-3"
       >

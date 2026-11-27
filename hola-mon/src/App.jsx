@@ -1,12 +1,13 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import Targeta from './components/Targeta.jsx'
 import Comptador from './components/Comptador.jsx'
 import FormulariTasca from './components/FormulariTasca.jsx'
 import FiltreTasques from './components/FiltreTasques.jsx'
 import LlistaTasques from './components/LlistaTasques.jsx'
+import { TasquesContext } from './context/TasquesContext.js'
 
 function App() {
-  // --- Comptador (Fitxa 02) ---
+ 
   const [comptador, setComptador] = useState(0)
 
   function canvia(delta) {
@@ -30,49 +31,13 @@ function App() {
     tipusComptador = 'error'
   }
 
-  // --- Tasques (Fitxa 03) ---
-  const [tasques, setTasques] = useState([])
+  
+  const { tasques } = useContext(TasquesContext)
   const [filtre, setFiltre] = useState('totes')
 
-  function afegeixTasca(text) {
-    const novaTasca = {
-      id: crypto.randomUUID(),
-      text,
-      feta: false,
-    }
-    setTasques((anteriors) => [...anteriors, novaTasca])
-  }
-
-  function toggleTasca(id) {
-    setTasques((anteriors) =>
-      anteriors.map((tasca) =>
-        tasca.id === id ? { ...tasca, feta: !tasca.feta } : tasca,
-      ),
-    )
-  }
-
-  function eliminaTasca(id) {
-    setTasques((anteriors) => anteriors.filter((tasca) => tasca.id !== id))
-  }
-
-  // Estat derivat
+  
   const pendents = tasques.filter((tasca) => !tasca.feta).length
   const fetes = tasques.length - pendents
-
-  const tasquesFiltrades = tasques.filter((tasca) => {
-    if (filtre === 'pendents') return !tasca.feta
-    if (filtre === 'fetes') return tasca.feta
-    return true
-  })
-
-  let missatgeBuit = ''
-  if (tasques.length === 0) {
-    missatgeBuit = 'Encara no hi ha tasques. Afegeix-ne una.'
-  } else if (filtre === 'pendents') {
-    missatgeBuit = 'No hi ha tasques pendents. Bona feina!'
-  } else if (filtre === 'fetes') {
-    missatgeBuit = 'Encara no has marcat cap tasca com a feta.'
-  }
 
   return (
     <main className="min-h-screen bg-slate-100 flex flex-col items-center justify-center gap-6 p-6">
@@ -89,7 +54,7 @@ function App() {
 
       <Targeta titol="Tasques">
         <div className="space-y-4">
-          <FormulariTasca onAfegir={afegeixTasca} />
+          <FormulariTasca />
 
           <div className="flex items-center justify-between text-sm text-slate-600">
             <span>
@@ -102,12 +67,7 @@ function App() {
 
           <FiltreTasques filtre={filtre} onCanviaFiltre={setFiltre} />
 
-          <LlistaTasques
-            tasques={tasquesFiltrades}
-            missatgeBuit={missatgeBuit}
-            onToggle={toggleTasca}
-            onElimina={eliminaTasca}
-          />
+          <LlistaTasques filtre={filtre} />
         </div>
       </Targeta>
     </main>
